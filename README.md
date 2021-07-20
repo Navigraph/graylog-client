@@ -20,10 +20,6 @@ Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adju
 
 Jest tests are set up to run with `npm test` or `yarn test`.
 
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
 ### Rollup
 
 TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
@@ -39,7 +35,6 @@ TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rol
 Two actions are added by default:
 
 - `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
 
 ## Optimizations
 
