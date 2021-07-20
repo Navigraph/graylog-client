@@ -1,6 +1,6 @@
 import fetchMock, { enableFetchMocks } from 'jest-fetch-mock';
-enableFetchMocks();
 import GraylogClient from '../src/index';
+enableFetchMocks();
 
 describe('Graylog client', () => {
   beforeEach(() => {
@@ -57,6 +57,7 @@ describe('Graylog client', () => {
     expect(() => {
       // @ts-ignore
       const glc = new GraylogClient();
+      glc.info('Wont run');
     }).toThrowError(
       'GraylogClient was instantiated with insufficient parameters.'
     );
