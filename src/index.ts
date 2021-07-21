@@ -1,5 +1,7 @@
 interface GraylogClientOptions {
+  /** The endpoint to which the requests should be sent, including protocol. */
   server: string;
+  /** The client from which the logs are sent. */
   source: string;
 }
 
@@ -30,7 +32,7 @@ enum Level {
 }
 
 // prettier-ignore
-export default class GraylogClient<ExtrasType = { [key: string] : string }> {
+export default class GraylogClient<ExtrasType = {}> {
   public server: string;
   public source: string;
 
@@ -68,28 +70,35 @@ export default class GraylogClient<ExtrasType = { [key: string] : string }> {
         console.error(err.stack);
       });
   }
-
+  /** Sends a log with emergency (level 0) severity. */
   emergency(message: string, extras?: ExtrasType) {
     return this.sendRequest({ short_message: message, level: Level.emergency, ...extras });
   }
+  /** Sends a log with alert (level 1) severity. */
   alert(message: string, extras?: ExtrasType) {
     return this.sendRequest({ short_message: message, level: Level.alert, ...extras });
   }
+  /** Sends a log with critical (level 2) severity. */
   critical(message: string, extras?: ExtrasType) {
     return this.sendRequest({ short_message: message, level: Level.critical, ...extras });
   }
+  /** Sends a log with error (level 3) severity. */
   error(message: string, extras?: ExtrasType) {
     return this.sendRequest({ short_message: message, level: Level.error, ...extras });
   }
+  /** Sends a log with warning (level 4) severity. */
   warning(message: string, extras?: ExtrasType) {
     return this.sendRequest({ short_message: message, level: Level.warning, ...extras });
   }
+  /** Sends a log with notice (level 5) severity. */
   notice(message: string, extras?: ExtrasType) {
     return this.sendRequest({ short_message: message, level: Level.notice, ...extras });
   }
+  /** Sends a log with info (level 6) severity. */
   info(message: string, extras?: ExtrasType) {
     return this.sendRequest({ short_message: message, level: Level.info, ...extras });
   }
+  /** Sends a log with debug (level 7) severity. */
   debug(message: string, extras?: ExtrasType) {
     return this.sendRequest({ short_message: message, level: Level.debug, ...extras });
   }
