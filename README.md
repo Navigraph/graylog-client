@@ -40,6 +40,7 @@ glc.warning('Something is about to happen!');
 
 ```tsx
 import GraylogClient from 'graylog-client';
+import { v4 as uuid } from 'uuid';
 
 interface GraylogExtras {
   facility: string;
@@ -49,6 +50,7 @@ interface GraylogExtras {
 const glc = new GraylogClient<GraylogExtras>({
   server: 'https://log.example.org',
   source: 'sample-app',
+  idGenerator: uuid,
 });
 
 glc.error('An error ocurred in the pizza component!', {
@@ -59,10 +61,11 @@ glc.error('An error ocurred in the pizza component!', {
 
 ## Constructor
 
-| Property | Type   | Description                                                            | Required |
-| -------- | ------ | ---------------------------------------------------------------------- | -------- |
-| server   | string | The endpoint to which the requests should be sent, including protocol. | yes      |
-| source   | string | The client from which the logs are sent.                               | yes      |
+| Property    | Type     | Description                                                                   | Required |
+| ----------- | -------- | ----------------------------------------------------------------------------- | -------- |
+| server      | string   | The endpoint to which the requests should be sent, including protocol.        | yes      |
+| source      | string   | The client from which the logs are sent.                                      | yes      |
+| idGenerator | function | A generator function that returns a string to use as ID for each log request. | no       |
 
 ### Typescript
 

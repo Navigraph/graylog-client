@@ -3,6 +3,8 @@ interface GraylogClientOptions {
   server: string;
   /** The client from which the logs are sent. */
   source: string;
+  /** A generator function that returns a string to use as ID for each log request. */
+  idGenerator?: () => string;
 }
 
 type StatusCallback = ({
@@ -13,12 +15,15 @@ type StatusCallback = ({
   statusText: string;
 }) => unknown;
 
-interface Gelf {
-  version?: string;
-  host?: string;
+interface GELF {
+  version: string;
+  host: string;
+  id?: string;
   short_message: string;
   level: number;
 }
+
+type RequestGELF = Omit<GELF, 'version' | 'host'>;
 
 enum Level {
   emergency,
@@ -35,6 +40,7 @@ enum Level {
 export default class GraylogClient<ExtrasType = {}> {
   public server: string;
   public source: string;
+  private generateId: (() => string) | undefined
 
   constructor(_options: GraylogClientOptions) {
     if(!_options || !_options.server || !_options.source) {
@@ -43,19 +49,26 @@ export default class GraylogClient<ExtrasType = {}> {
 
     this.server = _options.server;
     this.source = _options.source;
+    this.generateId = _options.idGenerator
   }
 
-  private get defaultProperties() {
+  private get defaultProperties(): Partial<GELF> {
     return { version: '1.1', host: this.source };
   }
 
-  private sendRequest(gelf: Gelf, callback?: StatusCallback) {
+  private sendRequest(gelf: RequestGELF, callback?: StatusCallback) {
+
+    const defaultProperties = this.defaultProperties
+    if(this.generateId) {
+      defaultProperties.id = this.generateId()
+    }
+    
     return fetch(this.server, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ...this.defaultProperties, ...gelf }),
+      body: JSON.stringify({ ...defaultProperties, ...gelf }),
     })
       .then(response => {
         if (!response.ok) throw Error('An error occured while sending a log to Graylog: ' + response.statusText);

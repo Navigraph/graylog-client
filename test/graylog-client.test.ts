@@ -4,7 +4,7 @@ enableFetchMocks();
 
 describe('Graylog client', () => {
   beforeEach(() => {
-    fetchMock.doMock();
+    fetchMock.resetMocks();
   });
 
   it('given a server and source, when making a request using a method, should make a valid request', () => {
@@ -50,6 +50,21 @@ describe('Graylog client', () => {
       expect.stringContaining(
         'An error occured while sending a log to Graylog: Internal Server Error'
       )
+    );
+  });
+
+  it('given a server, a source and an id generator, when making a request, should include an id in the request', async () => {
+    fetchMock.mockResponseOnce('', { status: 202, statusText: 'Accepted' });
+
+    const glc = new GraylogClient({
+      server: 'log.testserver.com',
+      source: 'jest',
+      idGenerator: () => 'test-id',
+    });
+    glc.info('Test log message');
+
+    expect(fetchMock.mock.calls[0]?.[1]?.body).toEqual(
+      expect.stringContaining('test-id')
     );
   });
 
