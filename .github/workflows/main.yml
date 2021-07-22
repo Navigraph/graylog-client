@@ -11,7 +11,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Use Node ${{ matrix.node }}
@@ -30,3 +30,35 @@ jobs:
 
       - name: Build
         run: yarn build
+
+  publish:
+    name: Generate changelog and publish to NPM
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Install deps and build (with cache)
+        uses: bahmutov/npm-install@v1
+
+      - name: Generate changelog & tag commit
+        run: yarn release
+
+      - id: publish
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          access: public
+
+      - uses: actions/checkout@v2
+        run: |
+          git config user.name github-actions
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .
+          git commit -m "chore(release): publish v${{ steps.publish.outputs.version }}"
+          git push --follow-tags
