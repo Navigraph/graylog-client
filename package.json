@@ -1,5 +1,9 @@
 {
+  "name": "@navigraph/graylog-client",
+  "author": "Malte Hallström <malte.hallstrom@gmail.com>",
+  "module": "dist/graylog-client.esm.js",
   "version": "0.1.0",
+  "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -9,12 +13,26 @@
   "engines": {
     "node": ">=10"
   },
+  "keywords": [
+    "graylog",
+    "gelf",
+    "logging",
+    "client"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Navigraph/graylog-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Navigraph/graylog-client/issues"
+  },
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build"
+    "prepare": "tsdx build",
+    "release": "standard-version"
   },
   "peerDependencies": {},
   "husky": {
@@ -28,14 +46,13 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "graylog-client",
-  "author": "Malte Hallström",
-  "module": "dist/graylog-client.esm.js",
   "devDependencies": {
     "husky": "^7.0.1",
     "jest-fetch-mock": "^3.0.3",
+    "standard-version": "^9.3.1",
     "tsdx": "^0.14.1",
     "tslib": "^2.3.0",
     "typescript": "^4.3.5"
-  }
+  },
+  "dependencies": {}
 }

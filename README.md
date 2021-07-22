@@ -11,13 +11,13 @@ In order to make use of the library, your Graylog instance needs to be configure
 ### Yarn
 
 ```bash
-yarn add https://github.com/Navigraph/graylog-client.git
+yarn add @navigraph/graylog-client
 ```
 
 ### NPM
 
 ```bash
-npm install https://github.com/Navigraph/graylog-client.git
+npm install @navigraph/graylog-client
 ```
 
 ## Usage
